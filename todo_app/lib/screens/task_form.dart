@@ -88,85 +88,99 @@ class _TaskFormState extends State<TaskForm> {
         title: Text(widget.task == null ? 'Add Task' : 'Edit Task'),
         backgroundColor: const Color.fromARGB(255, 117, 119, 122),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Add image at the top of the screen
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SvgPicture.asset(
-                'assets/images/create_img.svg', // Path to your SVG image
-                width: 150, // Adjust the width as needed
-                height: 150, // Adjust the height as needed
-              ),
-            ),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Add image at the top of the screen
+                      Center(
+                        child: SvgPicture.asset(
+                          'assets/images/create_img.svg', // Path to your SVG image
+                          width: 150, // Adjust the width as needed
+                          height: 150, // Adjust the height as needed
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // Input fields for Title and Description
+                      TextField(
+                        controller: _titleController,
+                        decoration: const InputDecoration(
+                          labelText: 'Title',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white70),
+                          ),
+                        ),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(height: 14),
+                      TextField(
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(
+                          labelText: 'Description',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white70),
+                          ),
+                        ),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(height: 14),
 
-            // Input fields for Title and Description
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
-                labelStyle: TextStyle(color: Colors.white),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white70),
-                ),
-              ),
-              style: const TextStyle(color: Colors.white),
-            ),
-            const SizedBox(height: 14),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description',
-                labelStyle: TextStyle(color: Colors.white),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white70),
-                ),
-              ),
-              style: const TextStyle(color: Colors.white),
-            ),
-            const SizedBox(height: 14),
+                      // Date picker button
+                      ElevatedButton(
+                        onPressed: _pickDueDate,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(
+                              255, 92, 7, 100), // Customize button color
+                        ),
+                        child: Text(
+                          _dueDate == null
+                              ? 'Pick Due Date'
+                              : 'Due Date: ${_dueDate!.toLocal()}'
+                                  .split(' ')[0],
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
 
-            // Date picker button
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: _pickDueDate,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(
-                        255, 92, 7, 100), // Customize button color
+                      // Save button
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: _saveTask,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                                255, 92, 7, 100), // Customize button color
+                          ),
+                          child: Text(
+                            widget.task == null
+                                ? 'Create Task'
+                                : 'Save Changes',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Text(
-                    _dueDate == null
-                        ? 'Pick Due Date'
-                        : 'Due Date: ${_dueDate!.toLocal()}'.split(' ')[0],
-                    style: const TextStyle(color: Colors.white),
-                  ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 14),
-
-            // Save button
-            ElevatedButton(
-              onPressed: _saveTask,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(
-                    255, 92, 7, 100), // Customize button color
               ),
-              child: Text(
-                widget.task == null ? 'Create Task' : 'Save Changes',
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

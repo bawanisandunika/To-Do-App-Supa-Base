@@ -30,6 +30,7 @@ flutter:
     - assets/images/welcome_img.svg
     - assets/images/pending_img.svg
     - assets/images/create_img.svg
+    - assets/images/login_img.svg
 
   uses-material-design: true
 
